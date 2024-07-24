@@ -33,7 +33,7 @@ publish:
 	@if [ -z "$(VERSION)" ]; then echo "Error: VERSION is not set"; exit 1; fi
 	@git tag $(VERSION)
 	@git push origin $(VERSION)
-	@GOFLAGS='' GOPROXY=proxy.golang.org go list -m github.com/Sectoid-Systems/sectoid-go-kit@$(VERSION)
+	@GOFLAGS=-mod=mod GOPROXY=proxy.golang.org go list -m github.com/Sectoid-Systems/sectoid-go-kit@$(VERSION)
 
 .PHONY: help
 help: ## Help target
