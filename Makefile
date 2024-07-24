@@ -25,6 +25,10 @@ fmt:
 
 .PHONY: publish
 publish: ## Publish target
+publish: clean
+publish: test
+publish: fmt
+publish: lint
 publish:
 	@if [ -z "$(VERSION)" ]; then \
         echo "Error: VERSION is not set"; \
