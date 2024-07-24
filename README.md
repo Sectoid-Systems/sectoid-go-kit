@@ -15,13 +15,35 @@ The Sectoid Go Kit is a collection of micro libraries and useful modules for Go 
 - **[supermath](./supermath/README.md)**: Utility functions for mathematical operations, including truncating floating-point numbers to a specific number of decimal places.
 - **[timespace](./timespace/README.md)**: Utility functions for converting between various timestamp formats and time representations.
 
+## Adding to Your Project
+
+To use the Sectoid Go Kit in your Go project, follow these steps:
+
+1. Initialize a new Go module (if you haven't already):
+    ```sh
+    go mod init your_project_name
+    ```
+2. Add the Sectoid Go Kit as a dependency:
+    ```sh
+    go get github.com/yourusername/sectoid-go-kit
+    ```
+
+3. Import the desired packages in your Go files:
+    ```go
+    import (
+        "github.com/Sectoid-Systems/sectoid-go-kit/ctxutils"
+        "github.com/Sectoid-Systems/sectoid-go-kit/envutils"
+        // import other packages as needed
+    )
+    ```
+
 ## Development Instructions
 
 To contribute to the Sectoid Go Kit, follow these steps:
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/sectoid-go-kit.git
+    git clone https://github.com/Sectoid-Systems/sectoid-go-kit.git
     ```
 2. Navigate to the project directory:
     ```sh
