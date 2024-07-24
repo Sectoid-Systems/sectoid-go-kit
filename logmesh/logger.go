@@ -10,6 +10,12 @@ const (
 	ZapLogger Provider = "zap"
 )
 
+type Config interface {
+	GetProvider() Provider
+	GetLogLevel() string
+	IsSugaredLog() bool
+}
+
 // Logger defines the interface for a logger with various log levels and methods.
 type Logger interface {
 	Info(args ...interface{})
@@ -30,12 +36,12 @@ type Logger interface {
 
 // NewLogger creates a new logger instance based on the provided level, sugared flag, and provider.
 // It returns the created Logger and an error, if any.
-func NewLogger(level string, sugared bool, provider Provider) (Logger, error) {
-	ll := ParseLogLevel(level)
-	switch provider {
+func NewLogger(config Config) (Logger, error) {
+	ll := ParseLogLevel(config.GetLogLevel())
+	switch config.GetProvider() {
 	case ZapLogger:
-		return newZapLogger(ll, sugared)
+		return newZapLogger(ll, config.IsSugaredLog())
 	default:
-		return nil, fmt.Errorf("unsupported logger provider: %s", provider)
+		return nil, fmt.Errorf("unsupported logger provider: %s", config.GetProvider())
 	}
 }

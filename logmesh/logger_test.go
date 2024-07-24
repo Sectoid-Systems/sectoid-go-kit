@@ -1,32 +1,66 @@
 package logmesh
 
 import (
+	"errors"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestNewLogger(t *testing.T) {
-	tests := []struct {
-		name      string
-		level     string
-		sugared   bool
-		provider  Provider
-		expectErr bool
-	}{
-		{"Valid ZapLogger", "info", true, ZapLogger, false},
-		{"Unsupported provider", "info", true, Provider("unsupported"), true},
-		{"Invalid log level", "invalid", true, ZapLogger, false}, // Assuming default log level is set
+type MockConfig struct {
+	provider   Provider
+	logLevel   string
+	sugaredLog bool
+}
+
+func (m *MockConfig) GetProvider() Provider {
+	return m.provider
+}
+
+func (m *MockConfig) GetLogLevel() string {
+	return m.logLevel
+}
+
+func (m *MockConfig) IsSugaredLog() bool {
+	return m.sugaredLog
+}
+
+func TestNewLogger_ZapLogger(t *testing.T) {
+	mockConfig := &MockConfig{
+		provider:   ZapLogger,
+		logLevel:   "info",
+		sugaredLog: true,
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			logger, err := NewLogger(tt.level, tt.sugared, tt.provider)
-			if (err != nil) != tt.expectErr {
-				t.Errorf("NewLogger() error = %v, expectErr %v", err, tt.expectErr)
-				return
-			}
-			if !tt.expectErr && logger == nil {
-				t.Error("Expected a logger instance, got nil")
-			}
-		})
+	logger, err := NewLogger(mockConfig)
+
+	assert.NoError(t, err)
+	assert.NotNil(t, logger)
+}
+
+func TestNewLogger_UnsupportedProvider(t *testing.T) {
+	mockConfig := &MockConfig{
+		provider:   "unsupported",
+		logLevel:   "info",
+		sugaredLog: false,
 	}
+
+	logger, err := NewLogger(mockConfig)
+
+	assert.Error(t, err)
+	assert.Nil(t, logger)
+	assert.Equal(t, errors.New("unsupported logger provider: unsupported"), err)
+}
+
+func TestNewLogger_ValidProviderWithoutSugar(t *testing.T) {
+	mockConfig := &MockConfig{
+		provider:   ZapLogger,
+		logLevel:   "debug",
+		sugaredLog: false,
+	}
+
+	logger, err := NewLogger(mockConfig)
+
+	assert.NoError(t, err)
+	assert.NotNil(t, logger)
 }
