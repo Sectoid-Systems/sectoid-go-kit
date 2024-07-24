@@ -22,8 +22,9 @@ func sendSignal(t *testing.T, sig os.Signal, delay time.Duration) {
 
 func TestWaitForShutdown_ContextCancelled(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	shutdownCalled := make(chan bool, 1)
+	defer cancel()
 
+	shutdownCalled := make(chan bool, 1)
 	shutdown := func() error {
 		shutdownCalled <- true
 		return nil
@@ -34,7 +35,7 @@ func TestWaitForShutdown_ContextCancelled(t *testing.T) {
 		cancel()
 	}()
 
-	WaitForShutdown(ctx, shutdown, cancel)
+	WaitForShutdown(ctx, shutdown)
 
 	select {
 	case <-shutdownCalled:
@@ -46,8 +47,9 @@ func TestWaitForShutdown_ContextCancelled(t *testing.T) {
 
 func TestWaitForShutdown_SignalReceived(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	shutdownCalled := make(chan bool, 1)
+	defer cancel()
 
+	shutdownCalled := make(chan bool, 1)
 	shutdown := func() error {
 		shutdownCalled <- true
 		return nil
@@ -55,7 +57,7 @@ func TestWaitForShutdown_SignalReceived(t *testing.T) {
 
 	go sendSignal(t, syscall.SIGTERM, 1*time.Second)
 
-	WaitForShutdown(ctx, shutdown, cancel)
+	WaitForShutdown(ctx, shutdown)
 
 	select {
 	case <-shutdownCalled:
@@ -67,6 +69,8 @@ func TestWaitForShutdown_SignalReceived(t *testing.T) {
 
 func TestWaitForShutdown_ShutdownError(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	expectedErr := errors.New("shutdown error")
 	shutdownCalled := make(chan bool, 1)
 
@@ -82,7 +86,7 @@ func TestWaitForShutdown_ShutdownError(t *testing.T) {
 	log.SetOutput(&logBuf)
 	defer log.SetOutput(os.Stderr)
 
-	WaitForShutdown(ctx, shutdown, cancel)
+	WaitForShutdown(ctx, shutdown)
 
 	select {
 	case <-shutdownCalled:

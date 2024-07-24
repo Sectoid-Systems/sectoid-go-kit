@@ -12,9 +12,7 @@ import (
 type ShutdownFunc func() error
 
 // WaitForShutdown waits for an interrupt or context cancellation signal to perform a shutdown.
-func WaitForShutdown(ctx context.Context, shutdown ShutdownFunc, cancel context.CancelFunc) {
-	defer cancel()
-
+func WaitForShutdown(ctx context.Context, shutdown ShutdownFunc) {
 	// Create a channel to listen for interrupt signals.
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
