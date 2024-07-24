@@ -24,4 +24,5 @@ go.work.sum
 # Custom
 .idea/
 vendor
+.DS_Store
 
