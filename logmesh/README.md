@@ -17,6 +17,18 @@ type Provider string
 
 - **ZapLogger**: Represents the zap logging provider.
 
+### Config
+
+The Config interface defines methods for retrieving logger configuration.
+
+```go
+type Config interface {
+    GetProvider() Provider
+    GetLogLevel() string
+    IsSugaredLog() bool
+}
+```
+
 ### Logger
 
 The `Logger` interface defines methods for a logger with various log levels and logging methods.
@@ -294,7 +306,13 @@ import (
 )
 
 func main() {
-    logger, err := logmesh.NewLogger("debug", true, logmesh.ZapLogger)
+	config := logmesh.Config{
+		Provider: "zap",
+		LogLevel: "debug",
+		Sugared:  true,
+	}
+
+	logger, err := logmesh.NewLogger(config)
     if err != nil {
         log.Fatalf("Failed to create logger: %v", err)
     }
