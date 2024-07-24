@@ -1,7 +1,36 @@
+# Define variables
+VERSION ?= v0.1.0
+
+
+
 .PHONY: test
 test: ## Run all tests on local
 test:
 	@go test ./...
+
+.PHONY: clean
+clean: ## Clean the binary
+clean:
+	@go clean
+
+.PHONY: lint
+lint: ## Run linter
+lint:
+	@golangci-lint run
+
+.PHONY: fmt
+fmt: ## Format target
+fmt:
+	@gofmt -w .
+
+.PHONY: publish
+publish: ## Publish target
+publish:
+	@if [ -z "$(VERSION)" ]; then \
+        echo "Error: VERSION is not set"; \
+        exit 1; \
+    fi
+    GOPROXY=proxy.golang.org go list -m github.com/Sectoid-Systems/sectoid-go-kit@$(VERSION)
 
 .PHONY: help
 help: ## Help target

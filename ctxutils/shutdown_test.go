@@ -11,19 +11,12 @@ import (
 	"time"
 )
 
-// mockShutdown is a helper function to mock the shutdown behavior in tests.
-func mockShutdown(err error) ShutdownFunc {
-	return func() error {
-		return err
-	}
-}
-
 // sendSignal is a helper function to send a signal after a delay.
 func sendSignal(t *testing.T, sig os.Signal, delay time.Duration) {
 	t.Helper()
 	time.Sleep(delay)
 	if err := syscall.Kill(syscall.Getpid(), sig.(syscall.Signal)); err != nil {
-		t.Fatalf("failed to send signal: %v", err)
+		t.Errorf("failed to send signal: %v", err)
 	}
 }
 
