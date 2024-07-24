@@ -25,7 +25,7 @@ To use the Sectoid Go Kit in your Go project, follow these steps:
     ```
 2. Add the Sectoid Go Kit as a dependency:
     ```sh
-    go get github.com/yourusername/sectoid-go-kit
+    go get github.com/Sectoid-Systems/sectoid-go-kit
     ```
 
 3. Import the desired packages in your Go files:
