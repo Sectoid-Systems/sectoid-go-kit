@@ -7,16 +7,13 @@ import (
 	"time"
 )
 
-type RetryPrinter func(v ...any)
-type RetryLogger func(format string, v ...any)
-
 // Retry runs the provided function len(timeouts) times, passing a context with each timeout as a parameter.
 // Waits at least until the timeout before moving on to the next attempt. Returns result of last call.
 func Retry(ctx context.Context, f func(ctx context.Context) error, timeouts []time.Duration) error {
 	return RetryWithNoise[*any](ctx, f, nil, timeouts)
 }
 
-func RetryWithNoise[T RetryPrinter | RetryLogger | Nilable](ctx context.Context, f func(ctx context.Context) error, out T, timeouts []time.Duration) error {
+func RetryWithNoise[T PrinterFunc | LoggerFunc | Nilable](ctx context.Context, f func(ctx context.Context) error, out T, timeouts []time.Duration) error {
 	for i, timeout := range timeouts {
 		start := time.Now()
 		ctxWithTimeout, cancel := context.WithTimeout(ctx, timeout)
@@ -30,9 +27,9 @@ func RetryWithNoise[T RetryPrinter | RetryLogger | Nilable](ctx context.Context,
 
 		if IsNotNil(out) {
 			switch f := any(out).(type) {
-			case RetryPrinter:
+			case PrinterFunc:
 				f(fmt.Sprintf("attempt %d failed: %v", i+1, err))
-			case RetryLogger:
+			case LoggerFunc:
 				f("attempt %d failed: %v", i+1, err)
 			}
 		}
