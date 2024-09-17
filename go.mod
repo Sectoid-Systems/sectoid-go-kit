@@ -1,6 +1,6 @@
 module github.com/Sectoid-Systems/sectoid-go-kit
 
-go 1.22.5
+go 1.23.1
 
 require (
 	github.com/stretchr/testify v1.8.1

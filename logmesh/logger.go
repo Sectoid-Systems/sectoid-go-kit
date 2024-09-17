@@ -18,16 +18,16 @@ type Config interface {
 
 // Logger defines the interface for a logger with various log levels and methods.
 type Logger interface {
-	Info(args ...interface{})
-	Infof(format string, v ...interface{})
-	Debug(args ...interface{})
-	Debugf(format string, v ...interface{})
-	Warn(args ...interface{})
-	Warnf(format string, v ...interface{})
-	Error(args ...interface{})
-	Errorf(format string, v ...interface{})
-	Panicf(format string, v ...interface{})
-	DPanicf(format string, v ...interface{})
+	Info(args ...any)
+	Infof(format string, v ...any)
+	Debug(args ...any)
+	Debugf(format string, v ...any)
+	Warn(args ...any)
+	Warnf(format string, v ...any)
+	Error(args ...any)
+	Errorf(format string, v ...any)
+	Panicf(format string, v ...any)
+	DPanicf(format string, v ...any)
 	With(key string, value string) Logger
 	Child(name string) Logger
 	Flush()

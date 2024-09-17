@@ -1,6 +1,13 @@
 package misc
 
-import "reflect"
+import (
+	"reflect"
+)
+
+// Nilable Constrain T to only types that can be nil (e.g., pointers)
+type Nilable interface {
+	~*any // Allows only pointer types
+}
 
 // AnyNil checks if any of the provided pointers are nil.
 // It returns true if at least one of the pointers is nil, otherwise false.
@@ -29,4 +36,17 @@ func AnyNil(pointers ...interface{}) bool {
 // - bool: true if the pointer is nil, false otherwise.
 func IsNil(p interface{}) bool {
 	return p == nil || (reflect.ValueOf(p).Kind() == reflect.Ptr && reflect.ValueOf(p).IsNil())
+}
+
+func AnyNotNil(pointers ...interface{}) bool {
+	for _, p := range pointers {
+		if IsNotNil(p) {
+			return true
+		}
+	}
+	return false
+}
+
+func IsNotNil(p interface{}) bool {
+	return !IsNil(p)
 }
