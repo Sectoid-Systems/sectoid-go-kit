@@ -3,13 +3,17 @@ package logmesh
 import "fmt"
 
 // Provider represents a logging provider.
+//
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 type Provider string
 
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 const (
 	// ZapLogger represents the zap logging provider.
 	ZapLogger Provider = "zap"
 )
 
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 type Config interface {
 	GetProvider() Provider
 	GetLogLevel() string
@@ -17,6 +21,8 @@ type Config interface {
 }
 
 // Logger defines the interface for a logger with various log levels and methods.
+//
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 type Logger interface {
 	Info(args ...any)
 	Infof(format string, v ...any)
@@ -36,6 +42,8 @@ type Logger interface {
 
 // NewLogger creates a new logger instance based on the provided level, sugared flag, and provider.
 // It returns the created Logger and an error, if any.
+//
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 func NewLogger(config Config) (Logger, error) {
 	ll := ParseLogLevel(config.GetLogLevel())
 	switch config.GetProvider() {
