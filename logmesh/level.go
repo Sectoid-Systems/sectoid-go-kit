@@ -3,9 +3,13 @@ package logmesh
 import "strings"
 
 // LogLevel represents a log level as a string.
+//
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 type LogLevel string
 
 // Define log levels as constants of type LogLevel.
+//
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 const (
 	LogLevelDebug   LogLevel = "DEBUG"
 	LogLevelDPanic  LogLevel = "DPANIC"
@@ -29,12 +33,16 @@ var logLevelsSet = map[LogLevel]bool{
 }
 
 // IsValidLogLevel checks if the provided log level is valid.
+//
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 func IsValidLogLevel(ll string) bool {
 	_, ok := logLevelsSet[LogLevel(strings.ToUpper(ll))]
 	return ok
 }
 
 // ParseLogLevel parses the log level string, returning a valid uppercased log level or InvalidLogLevel.
+//
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 func ParseLogLevel(ll string) LogLevel {
 	upper := LogLevel(strings.ToUpper(ll))
 	if IsValidLogLevel(string(upper)) {

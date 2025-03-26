@@ -28,6 +28,7 @@ func parseZapLogLevel(level LogLevel) zapcore.Level {
 	}
 }
 
+// Deprecated: logmesh is going to be removed from future versions. Please move to a proprietary log solution
 type zapLogger struct {
 	logger *zap.SugaredLogger
 }
